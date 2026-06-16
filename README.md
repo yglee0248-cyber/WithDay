@@ -59,9 +59,9 @@ WithDay/
 - **관리자 페이지 구현**: 관리자 전용 사이드바, 모바일 헤더, 대시보드 및 회원·일정·이용약관·관심사·추천 일정 관리 화면 구현.
 - **프론트엔드 배포 및 운영 환경 구성**: AWS S3와 CloudFront를 활용한 정적 파일 배포 환경을 구성하고, GitHub Actions 기반 CI/CD 파이프라인을 적용하여 자동 배포 환경 구축.
 
-
 ./gradlew bootRun
-```
+
+````
 
 ## 환경 변수
 
@@ -73,7 +73,7 @@ WithDay/
 VITE_ONESIGNAL_APP_ID=
 VITE_GOOGLE_CLIENT_ID=
 VITE_BACKSERVER=
-```
+````
 
 **Backend (`WithDayBack/src/main/resources/application-local.properties` 등)**
 
@@ -104,19 +104,19 @@ ONESIGNAL_API_KEY=
 
 - **문제 상황**: 기존 사용자가 로그아웃한 뒤 다른 계정으로 로그인했을 때, 페이지를 새로고침하지 않으면 이전 사용자의 알림 목록이 화면에 그대로 표시되는 현상이 발생하였습니다.
 - **원인**: React Query의 `queryKey`가 사용자 정보를 포함하지 않은 상태로 구성되어 있어, 계정이 변경되어도 동일한 Query로 인식되었습니다. 이로 인해 이전 로그인 사용자의 알림 캐시 데이터가 새로운 사용자 화면에서 재사용되는 문제가 발생하였습니다.
-- **해결 방법**: `queryKey`에 로그인한 사용자의 이메일 정보를 포함하여 사용자별로 캐시를 분리하였습니다. 또한 `enabled` 옵션을 활용하여 사용자 이메일이 존재할 때만 API 요청이 실행되도록 개선하였습니다.
+- **해결 방법**: `queryKey`에 로그인한 사용자의 이메일 정보를 포함하여 사용자별로 캐시를 분리하였습니다. 또한 `enabled` 옵션을 활용하여 사용자 이메일이 존재할 때만 API 요청이 실행되도록 개선하였습니다. ㅇㅇ
 
 ```jsx
-  const { data: notifications = [], isLoading } = useQuery({
-    queryKey: ["notifications", loginUser?.email],
-    queryFn: getNotifications,
-    enabled: !!loginUser?.email,
-  });
+const { data: notifications = [], isLoading } = useQuery({
+  queryKey: ["notifications", loginUser?.email],
+  queryFn: getNotifications,
+  enabled: !!loginUser?.email,
+});
 ```
 
- 이를 통해 계정 변경 시 React Query가 새로운 Query로 인식하여 최신 알림 데이터를 다시 요청하도록 수정하였으며, 로그인 정보가 없는 상태에서 발생하는 불필요한 API 호출도 방지하였습니다.
-- **배운 점**: React Query의 캐시는 `queryKey`를 기준으로 관리된다는 점을 알게 되었습니다. 따라서 사용자, 탭, 필터 등 조회 조건이 변경되는 화면에서는 해당 조건을 `queryKey`에 명확히 포함하여 캐시 범위를 설계해야 한다는 점을 배웠습니다.
+이를 통해 계정 변경 시 React Query가 새로운 Query로 인식하여 최신 알림 데이터를 다시 요청하도록 수정하였으며, 로그인 정보가 없는 상태에서 발생하는 불필요한 API 호출도 방지하였습니다.
 
+- **배운 점**: React Query의 캐시는 `queryKey`를 기준으로 관리된다는 점을 알게 되었습니다. 따라서 사용자, 탭, 필터 등 조회 조건이 변경되는 화면에서는 해당 조건을 `queryKey`에 명확히 포함하여 캐시 범위를 설계해야 한다는 점을 배웠습니다.
 
 ## 프로젝트 한 줄 요약
 
