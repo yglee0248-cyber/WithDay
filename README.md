@@ -1,12 +1,13 @@
 # WithDay
 
-여행 동행 매칭 플랫폼
+> 여행 동행 매칭 플랫폼
 
 ## 프로젝트 소개
 
 WithDay는 국비지원 과정에서 팀 프로젝트로 진행한 여행 동행 매칭 플랫폼입니다.
+
 사용자는 여행 또는 일정을 등록할 수 있고, 다른 사용자는 해당 일정에 동행을 신청할 수 있습니다.
-또한 관심사 기반 추천 일정, 소셜 로그인, 이메일 인증, 이미지 업로드, 알림 기능 등을 통해 여행 동행 서비스를 구성했습니다.
+또한 관심사 기반 추천 일정, Google 소셜 로그인, 이메일 인증, 이미지 업로드, 알림 기능 등을 통해 여행 동행 서비스를 구성했습니다.
 
 ## 주요 기능
 
@@ -19,13 +20,16 @@ WithDay는 국비지원 과정에서 팀 프로젝트로 진행한 여행 동행
 * **관리자 기능**: 약관, 관심사, 추천 일정 등 서비스 관리에 필요한 일부 데이터를 관리할 수 있습니다.
 * **이미지 업로드**: 프로필 이미지와 일정 이미지를 업로드하고 저장된 이미지 URL을 서비스 화면에 반영합니다.
 
-## 프로젝트 기간
+## 프로젝트 정보
 
-2026.05.11 ~ 2026.06.09
-
-## 팀 구성
-
-4인 팀 프로젝트
+| 항목    | 내용                                                     |
+| ----- | ------------------------------------------------------ |
+| 프로젝트명 | WithDay                                                |
+| 주제    | 여행 동행 매칭 플랫폼                                           |
+| 기간    | 2026.05.11 ~ 2026.06.09                                |
+| 형태    | 국비지원 과정 파이널 팀 프로젝트                                     |
+| 팀 구성  | 4인 팀 프로젝트                                              |
+| 담당 영역 | 회원 인증, Google 소셜 로그인, 추천 일정, 관리자 약관 / 관심사 관리, 별도 배포 경험 |
 
 ## 기술 스택
 
@@ -96,6 +100,80 @@ WithDay/
  └── .github/workflows/          # 프론트엔드 / 백엔드 배포 워크플로우
 ```
 
+## 실행 방법
+
+프론트엔드와 백엔드는 각각 `WithDayFront`, `WithDayBack` 폴더로 분리되어 있습니다.
+
+### Frontend
+
+```bash
+cd WithDayFront
+npm install
+npm run dev
+npm run build
+```
+
+### Backend
+
+```bash
+cd WithDayBack
+./gradlew build
+./gradlew bootRun
+```
+
+Windows 환경에서는 아래 명령어를 사용할 수 있습니다.
+
+```bash
+cd WithDayBack
+gradlew.bat build
+gradlew.bat bootRun
+```
+
+백엔드 기본 포트는 `10400`입니다.
+
+## 환경 변수
+
+로컬 실행 시 필요한 환경변수를 설정해야 합니다.
+실제 값은 저장소에 포함하지 않습니다.
+
+### Frontend
+
+```bash
+VITE_ONESIGNAL_APP_ID=
+VITE_GOOGLE_CLIENT_ID=
+VITE_BACKSERVER=
+```
+
+### Backend
+
+```bash
+DB_URL=
+DB_USERNAME=
+DB_PASSWORD=
+MAIL_USERNAME=
+MAIL_PASSWORD=
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+ONESIGNAL_APP_ID=
+ONESIGNAL_API_KEY=
+```
+
+필요한 경우 `SERVER_PORT`로 백엔드 실행 포트를 변경할 수 있습니다.
+
+환경변수 관리 시 아래 내용을 지켜야 합니다.
+
+* `.env`, `application-local.properties` 등 실제 환경변수 파일은 Git에 포함하지 않습니다.
+* API Key, Secret, DB 접속정보는 공개 저장소에 올리지 않습니다.
+* 실제 값이 노출된 적이 있다면 해당 키는 재발급 또는 폐기해야 합니다.
+
+## 배포 안내
+
+* Live Demo: https://d3276jh72yu5am.cloudfront.net/
+
+> 위 배포 주소는 학습 및 포트폴리오 확인 목적으로 별도 구성한 배포 환경입니다.
+> AWS 비용 또는 환경 정리 상황에 따라 추후 접속이 중단될 수 있습니다.
+
 ## 이영민 담당 역할
 
 * 회원가입
@@ -110,7 +188,7 @@ WithDay/
 * 추천 일정 이미지 처리
 * 관리자 약관 관리
 * 관리자 관심사 관리
-* AWS CloudFront 기반 별도 배포 경험(팀 배포와 별도로 학습 목적으로 진행)
+* AWS 기반 별도 배포 및 연결 점검
 
 ## 이영민 주요 구현 내용
 
@@ -161,83 +239,12 @@ WithDay/
 * 관심사 추가 / 수정 / 삭제
 * 회원가입 및 마이페이지 관심사 선택 흐름과 연결
 
-### 6. 별도 배포 경험
+### 6. 별도 배포 및 연결 점검
 
-* 팀 배포와 별도로 AWS CloudFront 주소 기준의 배포를 직접 진행
+* 팀 배포와 별도로 AWS 기반 배포 흐름을 직접 구성하고 확인
 * 배포 환경에서 화면 접근, API 연결, 정적 리소스 로딩 여부 점검
 * CloudFront 기반 정적 리소스 배포 흐름과 환경변수 / API 연결 점검 과정 경험
-* 해당 배포는 학습 및 포트폴리오 확인 목적의 별도 배포이며, 비용 또는 환경 문제에 따라 중단될 수 있습니다.
-
-## 배포 주소
-
-* Live Demo: [https://d3276jh72yu5am.cloudfront.net/](https://d3276jh72yu5am.cloudfront.net/)
-
-> 위 배포 주소는 학습 및 포트폴리오 확인 목적으로 별도 구성한 배포 환경입니다.
-> AWS 비용 또는 환경 정리 상황에 따라 추후 접속이 중단될 수 있습니다.
-
-## 실행 방법
-
-프론트엔드와 백엔드는 각각 `WithDayFront`, `WithDayBack` 폴더로 분리되어 있습니다.
-
-### Frontend
-
-```bash
-cd WithDayFront
-npm install
-npm run dev
-npm run build
-```
-
-### Backend
-
-```bash
-cd WithDayBack
-./gradlew build
-./gradlew bootRun
-```
-
-Windows 환경에서는 아래 명령어를 사용할 수 있습니다.
-
-```bash
-cd WithDayBack
-gradlew.bat build
-gradlew.bat bootRun
-```
-
-백엔드 기본 포트는 `10400`입니다.
-
-## 환경 변수
-
-로컬 실행 시 필요한 환경변수를 설정해야 합니다. 실제 값은 저장소에 포함하지 않습니다.
-
-### Frontend
-
-```bash
-VITE_ONESIGNAL_APP_ID=
-VITE_GOOGLE_CLIENT_ID=
-VITE_BACKSERVER=
-```
-
-### Backend
-
-```bash
-DB_URL=
-DB_USERNAME=
-DB_PASSWORD=
-MAIL_USERNAME=
-MAIL_PASSWORD=
-CLOUDINARY_CLOUD_NAME=
-CLOUDINARY_API_KEY=
-CLOUDINARY_API_SECRET=
-ONESIGNAL_APP_ID=
-ONESIGNAL_API_KEY=
-```
-
-필요한 경우 `SERVER_PORT`로 백엔드 실행 포트를 변경할 수 있습니다.
-
-* `.env`, `application-local.properties` 등 실제 환경변수 파일은 Git에 포함하지 않습니다.
-* API Key, Secret, DB 접속정보는 공개 저장소에 올리지 않습니다.
-* 실제 값이 노출된 적이 있다면 해당 키는 재발급 또는 폐기해야 합니다.
+* 해당 배포는 학습 및 포트폴리오 확인 목적의 별도 배포이며, 비용 또는 환경 문제에 따라 중단될 수 있음
 
 ## 트러블슈팅
 
@@ -276,4 +283,4 @@ ONESIGNAL_API_KEY=
 ## 프로젝트 한 줄 요약
 
 WithDay는 여행 일정 등록, 동행 신청, 추천 일정, 인증, 알림, 관리자 기능을 포함한 여행 동행 매칭 플랫폼입니다.
-이영민은 회원 인증, Google 소셜 로그인, 추천 일정, 관리자 약관 / 관심사 관리, 별도 CloudFront 배포 경험을 중심으로 프로젝트에 참여했습니다.
+이영민은 회원 인증, Google 소셜 로그인, 추천 일정, 관리자 약관 / 관심사 관리, 별도 배포 및 연결 점검을 중심으로 프로젝트에 참여했습니다.
